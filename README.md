@@ -13,7 +13,7 @@ Hence, this is an effort to understand the pros and cons of different languages 
 Quite obviously this repo is not for production. It can however, assist anyone in the following.
 1. If you want to grasp basic implementation contrasts between prog. languages over a single logic (autograd in this case).
 2. If you want to witness the performance contrast b/w prog. languages at small scale.
-3. If you want to develop a mental model of an autogrid engine, and how different languages bring it to life.
+3. If you want to develop a mental model of an autograd engine, and how different languages bring it to life.
 4. If you love micrograd, but want it in different languages.
 5. If you want to learn a new language by building projects, and have already understood and fallen in love with micrograd's pythonic implementation (this was my main purpose)
 
