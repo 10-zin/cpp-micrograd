@@ -63,6 +63,8 @@ int main() {
 
     // Perform addition using the operator+
     std::shared_ptr<Value> result_add = value1 + value2;
+
+    // Perform multiplication using the operator*
     std::shared_ptr<Value> result_mul = value1 * value2;
 
     // Access the result and print the data
