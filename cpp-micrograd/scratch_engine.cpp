@@ -37,10 +37,22 @@ public:
         };
         return out;
     }
+    std::shared_ptr<Value> operator*(const std::shared_ptr<Value>& other){
+        auto out = Value::create(data*other->data, std::unordered_set<std::shared_ptr<Value>>{shared_from_this(), other}, "*");
+        out->backward = [this, other, out] {
+            grad += other->data*out->data;
+            other->grad += data*out->data;
+        };
+        return out;
+    }
+
 };
 
 std::shared_ptr<Value> operator+(const std::shared_ptr<Value>& lhs, const std::shared_ptr<Value>& rhs) {
     return (*lhs) + rhs;
+}
+std::shared_ptr<Value> operator*(const std::shared_ptr<Value>& lhs, const std::shared_ptr<Value>& rhs) {
+    return (*lhs) * rhs;
 }
 
 
@@ -50,10 +62,12 @@ int main() {
     std::shared_ptr<Value> value2 = Value::create(3.7);
 
     // Perform addition using the operator+
-    std::shared_ptr<Value> result = value1 + value2;
+    std::shared_ptr<Value> result_add = value1 + value2;
+    std::shared_ptr<Value> result_mul = value1 * value2;
 
     // Access the result and print the data
-    std::cout << "Result: " << result->data << std::endl;
+    std::cout << "Result ADD: " << result_add->data << std::endl;
+    std::cout << "Result MUL: " << result_mul->data << std::endl;
 
     return 0;
 }
