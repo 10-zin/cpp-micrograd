@@ -1,0 +1,1 @@
+This is a folder of hands-on tiny scratch scripts to demonstrate the working and feel of a few snapshots of the main cpp code.
