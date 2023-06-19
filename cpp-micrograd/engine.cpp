@@ -18,6 +18,10 @@ double Value::get_data() const {
     return data;
 }
 
+void Value::zero_grad() {
+    this->grad=0.0;
+}
+
 std::shared_ptr<Value> Value::operator+(const std::shared_ptr<Value>& other) {
     prev = std::unordered_set<std::shared_ptr<Value>>{shared_from_this(), other};
 

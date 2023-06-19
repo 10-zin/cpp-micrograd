@@ -23,6 +23,7 @@ public:
     Value(double data, std::unordered_set<std::shared_ptr<Value>> prev = {}, std::string op = "");
 
     double get_data() const;
+    void zero_grad();
 
     std::shared_ptr<Value> operator+(const std::shared_ptr<Value>& other);
     std::shared_ptr<Value> operator*(const std::shared_ptr<Value>& other);
