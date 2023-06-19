@@ -32,7 +32,20 @@ class Neuron: public Module{
             for (int i = 0; i < nin; ++i) {
                 auto weight = std::make_shared<Value>(dis(gen));
                 this->weights.emplace_back(weight);
+            }
         }
+        std::shared_ptr<Value> operator()(const std::vector<std::shared_ptr<Value>>& x){
+            std::shared_ptr<Value> act = std::make_shared<Value>(0.0);;
+            for (int i=0; i<x.size(); ++i){
+                act = act + (x[i]*weights[i]);
+            }
+            act = act+bias;
+            
+            if (nonlin) {
+                // return act.relu();
+                return act;
+            }
+            return act;
 
         }
         void show_parameters() {
@@ -54,19 +67,35 @@ class Neuron: public Module{
     
 };
 
-int main(){
-    Neuron neuron(3, true);
-    neuron.show_parameters();
-    neuron.zero_grad();
-    
-    return 0;
-};
-
-
 // class Layer {
 //     private:
 //         std::vector<Neuron> neurons;
+
+//     public:
+//         Layer(int nout, int nin){
+//             neurons.reserve(neurons.size()+1);
+
+//             for (int i=0; i< nout; ++i){
+//                 Neuron neuron(nin, true);
+//                 neurons.emplace_back(neuron);
+//             }
+//         }
+
 // };
+
+int main(){
+    Neuron neuron(3, true);
+    neuron.show_parameters();
+    std::vector<std::shared_ptr<Value>> inputs;
+    for (int i=0; i < 3; ++i){
+        std::shared_ptr<Value> inp_val = std::make_shared<Value>(i);
+        inputs.push_back(inp_val);
+    } 
+    auto act = neuron(inputs);
+    std::cout<<act->get_data();
+    neuron.zero_grad();
+    return 0;
+};
 
 // class MLP {
 //     private:
