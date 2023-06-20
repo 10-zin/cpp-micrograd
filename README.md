@@ -15,7 +15,8 @@ It was made with the major intention for personal learning. So..
 ### Notable insightful material:
 1. I have annotated any seemingly complex keyword/design choices in code with their reason in `cpp-micrograd/digin`.
 Through that you can get a deeper understanding of cpp and implementation details of neural nets.
-2. I have also added few theoretical snippets, crisply show-casing how and why backprop via autograd engine works.
+2. I have also added few theoretical snippets, crisply show-casing how and why backprop via autograd engine works. You should check that out first in `digin-micrograd-theory`.
+3. If you want a full deep dive, and other interesting neural net implementation like this (but in python) check out [Karpathy's NNs youtube](https://www.youtube.com/watch?v=VMj-3S1tku0&list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ).
 
 ### Contributions
 I am also a novice cpp programmer, so my implementations can be very sub-optimal.
