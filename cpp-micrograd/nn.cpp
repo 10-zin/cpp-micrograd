@@ -10,7 +10,6 @@ class Module {
                 weight->zero_grad();
             }
         }
-
         virtual std::vector<std::shared_ptr<Value>> parameters() = 0;
 
 };
@@ -49,9 +48,11 @@ class Neuron: public Module{
 
         }
         void show_parameters() {
+            std::cout << "weights: ";
             for (auto& weight: this->weights){
-                std::cout << weight->get_data() << std::endl;
+                std::cout << weight->get_data() << ", ";
             }
+            std::cout<<"bias: "<<bias->get_data()<<std::endl;
         }
         std::vector<std::shared_ptr<Value>> parameters() override {
             std::vector<std::shared_ptr<Value>> parameters;
@@ -74,7 +75,7 @@ class Layer: public Module{
 
     public:
         Layer(int nin, int nout){
-            total_params=nin*nout;
+            total_params=(nin+1)*nout;
             neurons.reserve(neurons.size()+1);
 
             for (int i=0; i< nout; ++i){
@@ -97,12 +98,19 @@ class Layer: public Module{
             parameters.reserve(total_params + 1);
 
             for (auto neuron : neurons) {
-                for(auto param:  neuron.parameters()){
-                    parameters.emplace_back(param);
+                for(auto weight:  neuron.parameters()){
+                    parameters.emplace_back(weight);
                 }
             }
 
             return parameters;
+        }
+        void show_parameters() {
+            int i=0;
+            std::cout<<"Layer Weights: "<<total_params<<std::endl;
+            for (auto neuron : neurons) {
+                neuron.show_parameters();
+            }
         }
 
 };
@@ -114,18 +122,19 @@ class MLP: public Module{
     public:
         MLP(int nin, std::vector<int> nout) {
             layers.reserve(nout.size()+1);
-            total_params=1;
+            total_params=0;
 
             for (int i=0; i<nout.size(); ++i){
                 if (i==0){
                     layers.emplace_back(Layer(nin, nout[i]));
-                    total_params=total_params*nin*nout[i];
+                    total_params=total_params+nin*nout[i];
                 }
                 else{
                     layers.emplace_back(Layer(nout[i-1], nout[i]));
-                    total_params=total_params*nout[i-1]*nout[i];
+                    total_params=total_params+nout[i-1]*nout[i];
                 }
             }
+
         }
 
         std::vector<std::shared_ptr<Value>> operator()(std::vector<std::shared_ptr<Value>> x){
@@ -142,10 +151,20 @@ class MLP: public Module{
             for (auto layer : layers) {
                 for(auto param:  layer.parameters()){
                     parameters.emplace_back(param);
+                    
                 }
             }
 
             return parameters;
+        }
+
+        void show_parameters() {
+            int i =0;
+            for (auto layer : layers) {
+                std::cout<<"\nLayer"<<i<<": "<<std::endl;
+                layer.show_parameters();
+                i=i+1;
+            }
         }
 
 };
@@ -153,8 +172,7 @@ class MLP: public Module{
 int main(){
     int nin=3;
     std::vector<int> nout {6, 3, 1};
-    // Neuron neuron(3, true);
-    // neuron.show_parameters();
+    
     auto mlp = MLP(nin, nout);
     std::vector<std::shared_ptr<Value>> inputs;
     for (int i=0; i < 3; ++i){
@@ -163,9 +181,11 @@ int main(){
     } 
     auto output = mlp(inputs);
     for(auto op: output){
-        std::cout<<"MLP O/P";
+        std::cout<<"MLP O/P: ";
         std::cout<<op->get_data();
     }
+    mlp.show_parameters();
+    std::cout<<"\nTotal MLP Weights: "<<mlp.parameters().size()<<std::endl;
     return 0;
 };
 
