@@ -18,7 +18,7 @@ Through that you can get a deeper understanding of cpp and implementation detail
 2. I have also added few theoretical snippets, crisply show-casing how and why backprop via autograd engine works.
 
 ### Contributions
-I am also a novie cpp programmer, so my implementations can be very sub-optimal.
+I am also a novice cpp programmer, so my implementations can be very sub-optimal.
 To make this repository actually useful, it will definitely need contributions from anyone who can make any part better.
 So we will have open contributions for anyone interested.
 So feel free to add a PR/issue, we would really appreciate a collaboration! 
