@@ -2,7 +2,7 @@
 Inspired by [@karpathy's - micrograd](https://github.com/karpathy/micrograd).
 
 Autograd engine is the technical implementation of backpropogation algorithm that allows neural nets to learn.
-And micrograd is the simplest implementation of the autograd engine, but only in python.
+And micrograd is the simplest implementation of the autograd engine, but.. its only in python.
 
 This is a simple re-implementation of micrograd using cpp.
 It was made with the major intention for personal learning. So..
@@ -25,4 +25,4 @@ So feel free to add a PR/issue, we would really appreciate a collaboration!
 
 ### Credits
 1. [@karpathy](https://github.com/karpathy) for the perfect [NeuralNets](https://www.youtube.com/watch?v=VMj-3S1tku0&list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ) course
-2. [ChatGPT](https://chat.openai.com/), for being the perfect co-pilot!
+2. [ChatGPT](https://chat.openai.com/) for being the perfect co-pilot!
