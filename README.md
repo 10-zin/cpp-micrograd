@@ -1,23 +1,24 @@
-# polyglot-micrograd
+# cpp-micrograd
 Inspired by [@karpathy's - micrograd](https://github.com/karpathy/micrograd).
-A tiny "polyglot" autograd engine and a neural net library on top of it with PyTorch-like API. 
 
-In C++, Cuda, Rust, Go, Python, and JAX.
+Autograd engine is the technical implementation of backpropogation algorithm that allows neural nets to learn.
+And micrograd is the simplest implementation of the autograd engine, but only in python.
 
-This is an educational repository for viewers and the contributors to understand the practical contrasts of a bare-bones autogrid engine and neural net across programming languages.
+This is a simple re-implementation of micrograd using cpp.
+It was made with the major intention for personal learning. So..
 
-Programming languages present different coding philosophy and styles. These philosophies lead to significant differences between their performances, like inference speed or memory consumption. 
-In the world of data intensive Deep Learning, optimizing each bit operation can become imperative. 
-Hence, this is an effort to understand the pros and cons of different languages conditioned on a simple autogrid engine.
+### Who will find this repo useful?
+1. If you want a crisp backprop theory and annotated code of the autograd engine.
+2. If you love micrograd, but would wanna see one cpp version for it.
+3. If you wanna learn cpp by building neural nets, then this could be a good start (it was my purpose).
 
-Quite obviously this repo is not for production. It can however, assist anyone in the following.
-1. If you want to grasp basic implementation contrasts between prog. languages over a single logic (autograd in this case).
-2. If you want to witness the performance contrast b/w prog. languages at small scale.
-3. If you want to develop a mental model of an autograd engine, and how different languages bring it to life.
-4. If you love micrograd, but want it in different languages.
-5. If you want to learn a new language by building projects, and have already understood and fallen in love with micrograd's pythonic implementation (this was my main purpose)
+### Notable insightful material:
+1. I have annotated any seemingly complex keyword/design choices in code with their reason in `cpp-micrograd/digin`.
+Through that you can get a deeper understanding of cpp and implementation details of neural nets.
+2. I have also added few theoretical snippets, crisply show-casing how and why backprop via autograd engine works.
 
-Now since, I am merely a beginner in all the languages in scope of this project except python. My implementations can be very sub-optimal, and even non sensical sometimes.
+### Contributions
+I am also a novie cpp programmer, so my implementations can be very sub-optimal.
 To make this repository actually useful, it will definitely need contributions from anyone who can make any part better.
-So we will have open contributions for anyone interested. Hopefully we can make the repository more legitimate with time.
+So we will have open contributions for anyone interested.
 So feel free to add a PR/issue, we would really appreciate a collaboration! 
