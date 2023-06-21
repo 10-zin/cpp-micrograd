@@ -15,7 +15,7 @@ class Value : public std::enable_shared_from_this<Value> {
 private:
     double data;
     double grad;
-    std::function<void()> backward;
+    std::function<void()> _backward;
     std::unordered_set<std::shared_ptr<Value>> prev;
     std::string op;
 
@@ -27,6 +27,8 @@ public:
 
     std::shared_ptr<Value> operator+(const std::shared_ptr<Value>& other);
     std::shared_ptr<Value> operator*(const std::shared_ptr<Value>& other);
+
+    void backward();
 };
 
 #endif  // SCRATCH_ENGINE_H
