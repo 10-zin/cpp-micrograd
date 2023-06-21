@@ -76,7 +76,7 @@ class Layer: public Module{
     public:
         Layer(int nin, int nout){
             total_params=(nin+1)*nout;
-            neurons.reserve(neurons.size()+1);
+            neurons.reserve(nout+1);
 
             for (int i=0; i< nout; ++i){
                 Neuron neuron(nin, true);
@@ -186,6 +186,7 @@ int main(){
     }
     mlp.show_parameters();
     std::cout<<"\nTotal MLP Weights: "<<mlp.parameters().size()<<std::endl;
+    output[0]->backward();
     return 0;
 };
 
