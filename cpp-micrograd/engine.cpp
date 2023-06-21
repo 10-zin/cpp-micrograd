@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <memory>
+#include <vector>
 #include "engine.h"
 
 // Implementation of the Value class member functions
@@ -12,6 +13,11 @@ Value::Value(double data, std::unordered_set<std::shared_ptr<Value>> prev, std::
     this->grad = 0.0;
     this->prev = std::move(prev);
     this->op = std::move(op);
+    this->_backward = [this] {
+        for (const auto& child : this->prev) {
+            child->_backward();
+        }
+    };
 }
 
 double Value::get_data() const {
@@ -27,7 +33,7 @@ std::shared_ptr<Value> Value::operator+(const std::shared_ptr<Value>& other) {
 
     auto out = std::make_shared<Value>(data + other->data, prev, "+");
 
-    out->backward = [this, other, out] {
+    out->_backward = [this, other, out] {
         grad += out->grad;
         other->grad += out->grad;
     };
@@ -39,11 +45,31 @@ std::shared_ptr<Value> Value::operator*(const std::shared_ptr<Value>& other) {
 
     auto out = std::make_shared<Value>(data * other->data, prev, "*");
 
-    out->backward = [this, other, out] {
+    out->_backward = [this, other, out] {
         grad += other->data * out->data;
         other->grad += data * out->data;
     };
     return out;
+}
+
+void Value::backward() {
+    std::unordered_set<std::shared_ptr<Value>> visited;
+    std::function<void(const std::shared_ptr<Value>&)> build_topo;
+
+    build_topo = [&](const std::shared_ptr<Value>& v) {
+        if (visited.find(v) != visited.end())
+            return;
+
+        visited.insert(v);
+
+        for (const auto& child : v->prev) {
+            build_topo(child);
+        }
+
+        v->_backward();
+    };
+
+    build_topo(shared_from_this());
 }
 
 // Implementation of the non-member operators
