@@ -8,8 +8,8 @@ This is a simple re-implementation of micrograd using cpp.
 It was made with the major intention for personal learning. So..
 
 ### Who will find this repo useful?
-1. If you want a crisp backprop theory and annotated code of the autograd engine.
-2. If you love micrograd, but would wanna see one cpp version for it.
+1. If you love micrograd, but would wanna see one cpp version for it.
+2. If you want a crisp backprop theory and annotated code of the autograd engine. 
 3. If you wanna learn cpp by building neural nets, then this could be a good start (it was my purpose).
 
 ### TODO: Notable insightful material:
