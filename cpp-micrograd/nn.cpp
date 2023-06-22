@@ -7,7 +7,7 @@ class Module {
     public:
         void zero_grad(){
             for (const auto& weight: parameters()){
-                weight->zero_grad();
+                weight->set_grad(0.0);
             }
         }
         virtual std::vector<std::shared_ptr<Value>> parameters() = 0;
