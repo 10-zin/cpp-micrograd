@@ -13,17 +13,19 @@ std::shared_ptr<Value> operator*(const std::shared_ptr<Value>& lhs, const std::s
 
 class Value : public std::enable_shared_from_this<Value> {
 private:
-    double data;
-    double grad;
+    float data;
+    float grad;
     std::function<void()> _backward;
     std::unordered_set<std::shared_ptr<Value>> prev;
     std::string op;
 
 public:
-    Value(double data, std::unordered_set<std::shared_ptr<Value>> prev = {}, std::string op = "");
+    Value(float data, std::unordered_set<std::shared_ptr<Value>> prev = {}, std::string op = "");
 
-    double get_data() const;
-    void zero_grad();
+    float get_data() const;
+    std::unordered_set<std::shared_ptr<Value>>  get_prev() const;
+    float get_grad() const;
+    void set_grad(float grad_value);
 
     std::shared_ptr<Value> operator+(const std::shared_ptr<Value>& other);
     std::shared_ptr<Value> operator*(const std::shared_ptr<Value>& other);
