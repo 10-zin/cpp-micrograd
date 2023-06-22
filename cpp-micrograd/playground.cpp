@@ -19,15 +19,15 @@ int main() {
 
 
     // Access the result and print the data
-    std::cout << "Result Final: " << result_final->get_data() << std::endl;
+    // std::cout << "Result Final: " << result_final->get_data() << std::endl;
     // result_final->set_grad(1.0);
     result_final->backward();
     std::cout<<"\n\n\n";
-    std::cout<<value1->get_grad();
-    std::cout<<value2->get_grad();
-    std::cout<<value3->get_grad();
-    std::cout<<value4->get_grad();
-    // std::cout << "Result MUL: " << result_mul->get_data() << std::endl;
+    std::cout<<"finall\n";
+    std::cout<<value1->get_data()<<" grad: "<<value1->get_grad()<<std::endl;
+    std::cout<<value2->get_data()<<" grad: "<<value2->get_grad()<<std::endl;
+    std::cout<<value3->get_data()<<" grad: "<<value3->get_grad()<<std::endl;
+    std::cout<<value4->get_data()<<" grad: "<<value4->get_grad()<<std::endl;
     
     return 0;
 }
