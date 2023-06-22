@@ -37,29 +37,37 @@ void Value::set_grad(float grad_value) {
 }
 
 std::shared_ptr<Value> Value::operator+(const std::shared_ptr<Value>& other) {
-    prev = std::unordered_set<std::shared_ptr<Value>>{shared_from_this(), other};
+    auto out_prev = std::unordered_set<std::shared_ptr<Value>>{shared_from_this(), other};
 
-    auto out = std::make_shared<Value>(data + other->data, prev, "+");
+    auto out = std::make_shared<Value>(data + other->data, out_prev, "+");
 
     out->_backward = [this, other, out] {
-        std::cout<<"\nbefore inside + backward:\n"<<grad<<out->grad<<other->grad<<std::endl;
+        std::cout<<"\n\n----BACKWARD(+)---\n";
+        std::cout<<"\nout "<<out->get_data()<<" this "<<this->get_data()<<" other "<<other->get_data();
+        std::cout<<"\nBefore:\n"<<"grad: "<<grad<<" out->grad: "<<out->grad<<"other->grad: "<<other->grad<<std::endl;
         grad += out->grad;
         other->grad += out->grad;
-        std::cout<<"\ninside + backward:\n"<<grad<<out->grad<<other->grad<<std::endl;
+        std::cout<<"\nAfter:\n"<<"grad: "<<grad<<" out->grad: "<<out->grad<<"other->grad: "<<other->grad<<std::endl;
+        std::cout<<"\n\n----BACKWARD(+) END---\n";
     };
     return out;
 }
 
 std::shared_ptr<Value> Value::operator*(const std::shared_ptr<Value>& other) {
-    prev = std::unordered_set<std::shared_ptr<Value>>{shared_from_this(), other};
+    auto out_prev = std::unordered_set<std::shared_ptr<Value>>{shared_from_this(), other};
 
-    auto out = std::make_shared<Value>(data * other->data, prev, "*");
+    auto out = std::make_shared<Value>(data * other->data, out_prev, "*");
 
     out->_backward = [this, other, out] {
-        std::cout<<"\ninside * backward:\n"<<grad<<other->data<<out->data<<std::endl;
-        grad += other->data * out->data;
-        other->grad += data * out->data;
-        std::cout<<"\ninside * backward:\n"<<grad<<out->data<<other->data<<other->grad<<std::endl;
+        std::cout<<"\n\n---BACKWARD(*)---\n";
+        std::cout<<"\nBefore:\n"<<"grad: "<<grad<<" other->data: "<<other->data<<"out->data: "<<out->data<<std::endl;
+        std::cout<<"\nBefore:\n"<<"other->grad: "<<other->grad<<"data: "<<data<<"out->data: "<<out->data<<std::endl;
+        grad += other->data * out->grad;
+        other->grad += data * out->grad;
+        std::cout<<"\nAfter:\n"<<"grad: "<<grad<<" other->data: "<<other->data<<"out->data: "<<out->data<<std::endl;
+        std::cout<<"\nAfter:\n"<<"other->grad: "<<other->grad<<"data: "<<data<<"out->data: "<<out->data<<std::endl;
+        std::cout<<"\n---BACKWARD(*) END---\n";
+        
     };
     return out;
 }
@@ -71,6 +79,7 @@ void Value::backward() {
     std::function<void(const std::shared_ptr<Value>&)> build_topo = [&](const std::shared_ptr<Value>& v) {
         if (visited.find(v) == visited.end()) {
             visited.insert(v);
+
             for (const auto& child : v->prev) {
                 build_topo(child);
             }
@@ -81,13 +90,16 @@ void Value::backward() {
     build_topo(shared_from_this());
 
     grad = 1.0f;
+    std::cout<<"Topo elements backprop order(will start from right end)"<<std::endl;
+    for (auto v: topo){
+        std::cout<<v->data<<" ";
+    }
+
     for (auto it = topo.rbegin(); it != topo.rend(); ++it) {
         const auto& v = *it;
-        std::cout<<"\n\nbefore backprop\n";
-        std::cout<<"data: "<<v->get_data()<<" grad: "<<v->get_grad();
+        std::cout<<"\n\nnode\n";
+        std::cout<<"data: "<<v->data<<" grad: "<<v->data;
         v->_backward();
-        std::cout<<"after backprop\n";
-        std::cout<<"data: "<<v->get_data()<<" grad: "<<v->get_grad();
     }
 }
 
