@@ -13,7 +13,7 @@ It was made with the major intention for personal learning. So..
 3. If you wanna learn cpp by building neural nets, then this could be a good start (it was my purpose).
 
 ### TODO: Notable insightful material:
-1. `cpp-micrograd/digin` will consist of annotated version of the code. It will dive deep into seemingly complex cpp keywords and design. Through that you can get a deeper understanding of cpp and implementation details of neural nets.
+1. `cpp-micrograd/digin` will consist of annotated version of the code. It will dive deep into seemingly complex cpp keywords and design. Through that you can get a deeper understanding of cpp and design choices made.
 2. `digin-micrograd-theory` will consist of fundamental "to-the-point" theory behind autograd. It's based on Karpathy's explanation, customized for getting started with this repository.
 
 ### Contributions
