@@ -20,7 +20,7 @@ It was made with the major intention for personal learning. So..
 I am also a novice cpp programmer, so my implementations can be very sub-optimal.
 To make this repository actually useful, it will definitely need contributions from anyone who can make any part better.
 So we will have open contributions for anyone interested.
-So feel free to add a PR/issue, we would really appreciate a collaboration! 
+So feel free to add a PR/issue, it is free-form for now.
 
 ### Credits
 1. [@karpathy](https://github.com/karpathy) for the perfect [NeuralNets](https://www.youtube.com/watch?v=VMj-3S1tku0&list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ) course
