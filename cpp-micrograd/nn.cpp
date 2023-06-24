@@ -8,7 +8,7 @@
  * @brief Module class
 */
 void Module::zero_grad(){
-    for (const auto& weight: parameters()){
+    for (auto& weight: parameters()){
         weight->set_grad(0.0);
     }
 }
@@ -56,7 +56,7 @@ std::vector<std::shared_ptr<Value>> Neuron::parameters() {
     std::vector<std::shared_ptr<Value>> parameters;
     parameters.reserve(weights.size() + 1);
 
-    for (const auto& weight : weights) {
+    for (auto& weight : weights) {
         parameters.emplace_back(weight);
     }
     parameters.emplace_back(bias);
