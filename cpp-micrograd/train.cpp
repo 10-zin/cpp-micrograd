@@ -34,6 +34,9 @@ int main(){
     
     // Now, initialize a maulti-layer perceptron, a very simple neural network.
     auto mlp = MLP(nin, nout);
+    std::cout<<"MLP Architecutre & weight upon initialization"<<std::endl;
+    mlp.show_parameters();
+    std::cout<<"\nTotal MLP Weights: "<<mlp.parameters().size()<<std::endl;
 
     /**
      * @brief Training Dataset Creation
@@ -71,6 +74,7 @@ int main(){
 
     // feed input vector to the mlp.
     // the mlp predicts one value (as the last layer has one neuron)
+    std::cout<<"\nTraining loop:"<<std::endl;
     std::shared_ptr<Value> final_loss;
     float learning_rate = 0.1;
     int i=0;
@@ -98,11 +102,12 @@ int main(){
         i+=1;
     }
 
-
+    std::cout<<"MLP Architecutre & weight after training"<<std::endl;
     mlp.show_parameters();
     std::cout<<"\nTotal MLP Weights: "<<mlp.parameters().size()<<std::endl;
 
     // test
+    std::cout<<"Now testing...\n\n";
     int num_test = 10;
     std::vector<std::tuple<std::vector<std::shared_ptr<Value>>, std::vector<std::shared_ptr<Value>>>> test_set;
     int num_correct_preds=0;
@@ -124,7 +129,7 @@ int main(){
         }
         auto prediction = mlp(operands);
         float predicted_value;
-        std::cout<<prediction[0]->get_data()<<prediction[1]->get_data()<<std::endl;
+        // std::cout<<prediction[0]->get_data()<<prediction[1]->get_data()<<std::endl;
         if (prediction[0]>prediction[1]){
             predicted_value=0;
         }
@@ -134,10 +139,10 @@ int main(){
         if (predicted_value==label){
             num_correct_preds+=1;
         }
-        std::cout<<predicted_value<<label<<std::endl;
+        // std::cout<<predicted_value<<label<<std::endl;
     }
     float accuracy;
     accuracy = (static_cast<float>(num_correct_preds)/num_test)*100;
-    std::cout<<"Accuracy: "<<accuracy<<"%"<<std::endl;
+    std::cout<<"Test Accuracy: "<<accuracy<<"%"<<std::endl;
     return 0;
 };
