@@ -183,14 +183,8 @@ std::shared_ptr<Value> Value::operator*(const std::shared_ptr<Value>& other) {
     auto out = std::make_shared<Value>(data * other->data, out_prev, "*");
 
     out->_backward = [this, other, out] {
-        // std::cout<<"\n\n---BACKWARD(*)---\n";
-        // std::cout<<"\nBefore:\n"<<"grad: "<<grad<<" other->data: "<<other->data<<"out->data: "<<out->data<<std::endl;
-        // std::cout<<"\nBefore:\n"<<"other->grad: "<<other->grad<<"data: "<<data<<"out->data: "<<out->data<<std::endl;
         grad += other->data * out->grad;
         other->grad += data * out->grad;
-        // std::cout<<"\nAfter:\n"<<"grad: "<<grad<<" other->data: "<<other->data<<"out->data: "<<out->data<<std::endl;
-        // std::cout<<"\nAfter:\n"<<"other->grad: "<<other->grad<<"data: "<<data<<"out->data: "<<out->data<<std::endl;
-        // std::cout<<"\n---BACKWARD(*) END---\n";
         
     };
     return out;
