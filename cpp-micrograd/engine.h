@@ -1,5 +1,5 @@
-#ifndef SCRATCH_ENGINE_H
-#define SCRATCH_ENGINE_H
+#ifndef ENGINE_H
+#define ENGINE_H
 
 #include <functional>
 #include <unordered_set>
