@@ -42,7 +42,7 @@ int main(){
      * @brief Training Dataset Creation
      * Let's create a training dataset, for training the MLP.
      * Each training example, will be a set of input, target.
-     * input will be a 2 dim vector, and target will be 1 dim.
+     * input and target both will be a 2 dim vector.
     */
     int num_train = 10;
     std::vector<std::tuple<std::vector<std::shared_ptr<Value>>, std::vector<std::shared_ptr<Value>>>> train_set;
@@ -72,8 +72,19 @@ int main(){
         train_set.push_back(train_example);
     } 
 
-    // feed input vector to the mlp.
-    // the mlp predicts one value (as the last layer has one neuron)
+    /**
+     * @brief Training Loop
+     * do one loop for the entire training set.
+     * feed each input to mlp, get the output from mlp which will be a 2 dim vector.
+     * the target is also a 2 dim vector.
+     * calculate the loss, (prediction[i]-target[i])^2 where i is 0, and 1.
+     * Mean squared error is a simple loss function we can take.
+     * then do loss->backward(). As loss is the final value object created in the entire computation graph.
+     * This will calulate gradient for all weights in the mlp, hence an `autograd engine`.
+     * Then update all weights by doing w_new = w-lr*grad.
+     * The gradient will guide the weights such that the overall loss reduces.
+     * And as we see the loss gradually decreases!
+    */
     std::cout<<"\nTraining loop:"<<std::endl;
     std::shared_ptr<Value> final_loss;
     float learning_rate = 0.1;
@@ -82,10 +93,10 @@ int main(){
         auto operands = std::get<0>(train_example);
         auto target = std::get<1>(train_example);
 
-        auto result = mlp(operands);
+        auto prediction = mlp(operands);
         std::shared_ptr<Value> total_loss = std::make_shared<Value>(0.0);
         for (int i=0; i<target.size(); ++i){
-            auto loss = result[i]-target[i];
+            auto loss = prediction[i]-target[i];
             loss->pow(std::make_shared<Value>(2));
             total_loss = total_loss+loss;
         }
@@ -102,11 +113,21 @@ int main(){
         i+=1;
     }
 
+    /**
+     * @brief Checkout updated weights
+     * If the weights updated correctly all the weights will be different from when they were initialized.
+    */
     std::cout<<"MLP Architecutre & weight after training"<<std::endl;
     mlp.show_parameters();
     std::cout<<"\nTotal MLP Weights: "<<mlp.parameters().size()<<std::endl;
 
-    // test
+    /**
+     * @brief Test loop
+     * Same as the training loop.
+     * Just that we want to note which of the dimension in prediction vector scores the largest.
+     * the dimension that scores the largest is the model's output of the input operands.
+     * The more accurate the prediction, the more the model learns the AND gate logic.
+    */
     std::cout<<"Now testing...\n\n";
     int num_test = 10;
     std::vector<std::tuple<std::vector<std::shared_ptr<Value>>, std::vector<std::shared_ptr<Value>>>> test_set;
