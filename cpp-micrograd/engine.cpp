@@ -44,6 +44,9 @@ float Value::get_data() {
     return data;
 }
 
+/**
+     * @brief Sets the scalar value stored in the Value object.
+*/
 void Value::set_data(float data) {
     this->data = data;
 }
@@ -90,41 +93,75 @@ std::shared_ptr<Value> Value::operator+(const std::shared_ptr<Value>& other) {
     auto out = std::make_shared<Value>(data + other->data, out_prev, "+");
 
     out->_backward = [this, other, out] {
-        // std::cout<<"\n\n----BACKWARD(+)---\n";
-        // std::cout<<"\nout "<<out->get_data()<<" this "<<this->get_data()<<" other "<<other->get_data();
-        // std::cout<<"\nBefore:\n"<<"grad: "<<grad<<" out->grad: "<<out->grad<<"other->grad: "<<other->grad<<std::endl;
         grad += out->grad;
         other->grad += out->grad;
-        // std::cout<<"\nAfter:\n"<<"grad: "<<grad<<" out->grad: "<<out->grad<<"other->grad: "<<other->grad<<std::endl;
-        // std::cout<<"\n\n----BACKWARD(+) END---\n";
+
     };
     return out;
 }
 
+/**
+     * @brief Overloaded operator for negation of the Value object.
+     * For ex. 
+     * auto v1 = std::make_shared<Value>(2.5);
+     * auto v1 = -v1;
+     * defining the operator- allows us to use the intuitive expression (-b).
+
+     * @return A new Value object (type: std::shared_ptr<Value>) representing the negated Value object.
+*/
 std::shared_ptr<Value> Value::operator-() {
     return shared_from_this() * std::make_shared<Value>(-1.0);
 }
 
+/**
+     * @brief Overloaded operator for subtraction of two Value objects.
+     * For ex. 
+     * auto v1 = std::make_shared<Value>(2.5);
+     * auto v2 = std::make_shared<Value>(3.5);
+     * auto v1_2 = v1-v2;
+     * defining the operator- allows us to use the intuitive expression a+(-b).
+
+     * @param other The other Value object to be subtracted.
+     * @return A new Value object (type: std::shared_ptr<Value>) representing the subtraction of the two Value objects.
+*/
 std::shared_ptr<Value> Value::operator-(const std::shared_ptr<Value>& other) {
     return shared_from_this() + (other->operator-());
 }
 
+/**
+     * @brief Overloaded operator for power of two Value objects.
+     * For ex. 
+     * auto v1 = std::make_shared<Value>(2.5);
+     * auto v2 = std::make_shared<Value>(3.5);
+     * auto v1_2 = v1->pow(v2);
+     * defining the pow allows us to use the intuitive expression a->pow(b).
+
+     * @param other The other Value object which acts as the power.
+     * @return A new Value object (type: std::shared_ptr<Value>) representing v1^v2.
+*/
 std::shared_ptr<Value> Value::pow(const std::shared_ptr<Value>& other) {
     auto out_prev = std::unordered_set<std::shared_ptr<Value>>{shared_from_this(), other};
 
     auto out = std::make_shared<Value>(std::pow(data, other->data), out_prev, "^");
 
     out->_backward = [this, other, out] {
-        // std::cout<<"\n\n----BACKWARD(^)---\n";
-        // std::cout<<"\nout "<<out->get_data()<<" this "<<this->get_data()<<" other "<<other->get_data();
-        // std::cout<<"\nBefore:\n"<<"grad: "<<grad<<" out->grad: "<<out->grad<<"other->grad: "<<other->grad<<std::endl;
         grad +=other->data * std::pow(data, other->data - 1) * out->grad;
-        // std::cout<<"\nAfter:\n"<<"grad: "<<grad<<" out->grad: "<<out->grad<<"other->grad: "<<other->grad<<std::endl;
-        // std::cout<<"\n\n----BACKWARD(^) END---\n";
+
     };
     return out;
 }
 
+/**
+     * @brief Overloaded operator for division of two Value objects.
+     * For ex. 
+     * auto v1 = std::make_shared<Value>(2.5);
+     * auto v2 = std::make_shared<Value>(3.5);
+     * auto v1_2 = v1/v2;
+     * defining the operator/ allows us to use the intuitive expression a/b.
+
+     * @param other The other Value object to be divided.
+     * @return A new Value object (type: std::shared_ptr<Value>) representing the division of the two Value objects.
+*/
 std::shared_ptr<Value> Value::operator/(const std::shared_ptr<Value>& other) {
     return shared_from_this() * other->pow(std::make_shared<Value>(-1)) ;
 }
@@ -183,22 +220,15 @@ void Value::backward() {
 
     build_topo(shared_from_this());
 
-    grad = 1.0f;
-    // std::cout<<"Topo elements backprop order(will start from right end)"<<std::endl;
-    // for (auto v: topo){
-    //     std::cout<<v->data<<" ";
-    // }
+    grad = 1.0;
 
     for (auto it = topo.rbegin(); it != topo.rend(); ++it) {
         const auto& v = *it;
-        // std::cout<<"\n\nnode\n";
-        // std::cout<<"data: "<<v->data<<" grad: "<<v->data;
         v->_backward();
     }
 }
 
-
-// Non-member operators
+// Non-member operators for global-level access to expressing a+b etc..
 
 /**
  * @brief Overloaded operator for addition of two Value objects.
@@ -210,6 +240,12 @@ std::shared_ptr<Value> operator+(const std::shared_ptr<Value>& lhs, const std::s
     return (*lhs) + rhs;
 }
 
+/**
+ * @brief Overloaded operator for subtraction of two Value objects.
+ * @param lhs The left-hand side Value object.
+ * @param rhs The right-hand side Value object.
+ * @return A new Value object (type: std::shared_ptr<Value>) representing the subtraction of the two Value objects.
+ */
 std::shared_ptr<Value> operator-(const std::shared_ptr<Value>& lhs, const std::shared_ptr<Value>& rhs) {
     return (*lhs) - rhs;
 }
@@ -224,10 +260,22 @@ std::shared_ptr<Value> operator*(const std::shared_ptr<Value>& lhs, const std::s
     return (*lhs) * rhs;
 }
 
+/**
+ * @brief Overloaded operator for division of two Value objects.
+ * @param lhs The left-hand side Value object.
+ * @param rhs The right-hand side Value object.
+ * @return A new Value object (type: std::shared_ptr<Value>) representing the division of the two Value objects.
+ */
 std::shared_ptr<Value> operator/(const std::shared_ptr<Value>& lhs, const std::shared_ptr<Value>& rhs) {
     return (*lhs) / rhs;
 }
 
+/**
+ * @brief Overloaded operator for power of two Value objects.
+ * @param lhs The left-hand side Value object.
+ * @param rhs The right-hand side Value object.
+ * @return A new Value object (type: std::shared_ptr<Value>) representing the power of the two Value objects.
+ */
 std::shared_ptr<Value> pow(const std::shared_ptr<Value>& lhs, const std::shared_ptr<Value>& rhs) {
     return lhs->pow(rhs);
 }
