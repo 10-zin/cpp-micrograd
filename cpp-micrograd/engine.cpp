@@ -6,7 +6,22 @@
 #include <vector>
 #include "engine.h"
 
-// Implementation of the Value class member functions
+/*
+* @brief Value class implements the fundamental building block of an autograd engine.
+* 
+* For simplicity, it accepts only scalars.
+* You can create a Value object simply by wrapping around any float.
+* For ex. wrap a scalar, 2.5 in a Value class via `auto v1 = std::make_shared<Value>(2.5);`
+* Once you create a Value object for a scalar, it can be included as a node in the bigger neural network graph.
+* For more intuitive understanding of a node, its role in a nerual network graph, and how back prop comes into the picture check out `digin-micrograd-theory`.
+*
+* @param data (type: float): The scalar value wrapped in the Value object.
+* @param grad (type: float): gradient of the final node in the autograd graph, wrt the current value object.
+* @param prev (type: std::unordered_set<std::shared_ptr<Value>>): The set of Value objects that created the current Value object.
+* @param op (type: std::string): The operation (like +, *) that was performed to create current value object.
+* @param _backward: A lambda function representing the expression to calculate the derivative of the final node with respect to the current node (this Value object).
+
+*/
 
 Value::Value(float data, std::unordered_set<std::shared_ptr<Value>> prev, std::string op) {
     this->data = data;
