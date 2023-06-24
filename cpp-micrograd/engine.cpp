@@ -4,6 +4,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <cmath>
 #include "engine.h"
 
 /**
@@ -39,9 +40,14 @@ Value::Value(float data, std::unordered_set<std::shared_ptr<Value>> prev, std::s
      * @brief Retrieves the scalar value stored in the Value object.
      * @return The scalar value (type: float) wrapped in the Value object.
 */
-float Value::get_data() const {
+float Value::get_data() {
     return data;
 }
+
+void Value::set_data(float data) {
+    this->data = data;
+}
+
 
 /**
      * @brief Retrieves the set of Value objects that created the current Value object.
@@ -84,15 +90,43 @@ std::shared_ptr<Value> Value::operator+(const std::shared_ptr<Value>& other) {
     auto out = std::make_shared<Value>(data + other->data, out_prev, "+");
 
     out->_backward = [this, other, out] {
-        std::cout<<"\n\n----BACKWARD(+)---\n";
-        std::cout<<"\nout "<<out->get_data()<<" this "<<this->get_data()<<" other "<<other->get_data();
-        std::cout<<"\nBefore:\n"<<"grad: "<<grad<<" out->grad: "<<out->grad<<"other->grad: "<<other->grad<<std::endl;
+        // std::cout<<"\n\n----BACKWARD(+)---\n";
+        // std::cout<<"\nout "<<out->get_data()<<" this "<<this->get_data()<<" other "<<other->get_data();
+        // std::cout<<"\nBefore:\n"<<"grad: "<<grad<<" out->grad: "<<out->grad<<"other->grad: "<<other->grad<<std::endl;
         grad += out->grad;
         other->grad += out->grad;
-        std::cout<<"\nAfter:\n"<<"grad: "<<grad<<" out->grad: "<<out->grad<<"other->grad: "<<other->grad<<std::endl;
-        std::cout<<"\n\n----BACKWARD(+) END---\n";
+        // std::cout<<"\nAfter:\n"<<"grad: "<<grad<<" out->grad: "<<out->grad<<"other->grad: "<<other->grad<<std::endl;
+        // std::cout<<"\n\n----BACKWARD(+) END---\n";
     };
     return out;
+}
+
+std::shared_ptr<Value> Value::operator-() {
+    return shared_from_this() * std::make_shared<Value>(-1.0);
+}
+
+std::shared_ptr<Value> Value::operator-(const std::shared_ptr<Value>& other) {
+    return shared_from_this() + (other->operator-());
+}
+
+std::shared_ptr<Value> Value::pow(const std::shared_ptr<Value>& other) {
+    auto out_prev = std::unordered_set<std::shared_ptr<Value>>{shared_from_this(), other};
+
+    auto out = std::make_shared<Value>(std::pow(data, other->data), out_prev, "^");
+
+    out->_backward = [this, other, out] {
+        // std::cout<<"\n\n----BACKWARD(^)---\n";
+        // std::cout<<"\nout "<<out->get_data()<<" this "<<this->get_data()<<" other "<<other->get_data();
+        // std::cout<<"\nBefore:\n"<<"grad: "<<grad<<" out->grad: "<<out->grad<<"other->grad: "<<other->grad<<std::endl;
+        grad +=other->data * std::pow(data, other->data - 1) * out->grad;
+        // std::cout<<"\nAfter:\n"<<"grad: "<<grad<<" out->grad: "<<out->grad<<"other->grad: "<<other->grad<<std::endl;
+        // std::cout<<"\n\n----BACKWARD(^) END---\n";
+    };
+    return out;
+}
+
+std::shared_ptr<Value> Value::operator/(const std::shared_ptr<Value>& other) {
+    return shared_from_this() * other->pow(std::make_shared<Value>(-1)) ;
 }
 
 /**
@@ -112,14 +146,14 @@ std::shared_ptr<Value> Value::operator*(const std::shared_ptr<Value>& other) {
     auto out = std::make_shared<Value>(data * other->data, out_prev, "*");
 
     out->_backward = [this, other, out] {
-        std::cout<<"\n\n---BACKWARD(*)---\n";
-        std::cout<<"\nBefore:\n"<<"grad: "<<grad<<" other->data: "<<other->data<<"out->data: "<<out->data<<std::endl;
-        std::cout<<"\nBefore:\n"<<"other->grad: "<<other->grad<<"data: "<<data<<"out->data: "<<out->data<<std::endl;
+        // std::cout<<"\n\n---BACKWARD(*)---\n";
+        // std::cout<<"\nBefore:\n"<<"grad: "<<grad<<" other->data: "<<other->data<<"out->data: "<<out->data<<std::endl;
+        // std::cout<<"\nBefore:\n"<<"other->grad: "<<other->grad<<"data: "<<data<<"out->data: "<<out->data<<std::endl;
         grad += other->data * out->grad;
         other->grad += data * out->grad;
-        std::cout<<"\nAfter:\n"<<"grad: "<<grad<<" other->data: "<<other->data<<"out->data: "<<out->data<<std::endl;
-        std::cout<<"\nAfter:\n"<<"other->grad: "<<other->grad<<"data: "<<data<<"out->data: "<<out->data<<std::endl;
-        std::cout<<"\n---BACKWARD(*) END---\n";
+        // std::cout<<"\nAfter:\n"<<"grad: "<<grad<<" other->data: "<<other->data<<"out->data: "<<out->data<<std::endl;
+        // std::cout<<"\nAfter:\n"<<"other->grad: "<<other->grad<<"data: "<<data<<"out->data: "<<out->data<<std::endl;
+        // std::cout<<"\n---BACKWARD(*) END---\n";
         
     };
     return out;
@@ -150,15 +184,15 @@ void Value::backward() {
     build_topo(shared_from_this());
 
     grad = 1.0f;
-    std::cout<<"Topo elements backprop order(will start from right end)"<<std::endl;
-    for (auto v: topo){
-        std::cout<<v->data<<" ";
-    }
+    // std::cout<<"Topo elements backprop order(will start from right end)"<<std::endl;
+    // for (auto v: topo){
+    //     std::cout<<v->data<<" ";
+    // }
 
     for (auto it = topo.rbegin(); it != topo.rend(); ++it) {
         const auto& v = *it;
-        std::cout<<"\n\nnode\n";
-        std::cout<<"data: "<<v->data<<" grad: "<<v->data;
+        // std::cout<<"\n\nnode\n";
+        // std::cout<<"data: "<<v->data<<" grad: "<<v->data;
         v->_backward();
     }
 }
@@ -176,6 +210,10 @@ std::shared_ptr<Value> operator+(const std::shared_ptr<Value>& lhs, const std::s
     return (*lhs) + rhs;
 }
 
+std::shared_ptr<Value> operator-(const std::shared_ptr<Value>& lhs, const std::shared_ptr<Value>& rhs) {
+    return (*lhs) - rhs;
+}
+
 /**
  * @brief Overloaded operator for multiplication of two Value objects.
  * @param lhs The left-hand side Value object.
@@ -184,4 +222,12 @@ std::shared_ptr<Value> operator+(const std::shared_ptr<Value>& lhs, const std::s
  */
 std::shared_ptr<Value> operator*(const std::shared_ptr<Value>& lhs, const std::shared_ptr<Value>& rhs) {
     return (*lhs) * rhs;
+}
+
+std::shared_ptr<Value> operator/(const std::shared_ptr<Value>& lhs, const std::shared_ptr<Value>& rhs) {
+    return (*lhs) / rhs;
+}
+
+std::shared_ptr<Value> pow(const std::shared_ptr<Value>& lhs, const std::shared_ptr<Value>& rhs) {
+    return lhs->pow(rhs);
 }
