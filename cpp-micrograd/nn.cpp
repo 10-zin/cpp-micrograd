@@ -6,7 +6,11 @@
 
 /**
  * @brief Module class
-*/
+ *
+ * The Module class represents a base class for neural network modules.
+ * It provides methods for zeroing out the gradients of the parameters.
+ */
+
 void Module::zero_grad(){
     for (auto& weight: parameters()){
         weight->set_grad(0.0);
@@ -15,7 +19,11 @@ void Module::zero_grad(){
 
 /**
  * @brief Neuron class
-*/
+ *
+ * The Neuron class represents a single neuron in a neural network layer.
+ * It holds the weights and bias associated with the neuron and provides
+ * functionality for computing the output of the neuron.
+ */
 Neuron::Neuron (int nin, bool nonlin){
     this->nonlin = nonlin;
 
@@ -66,6 +74,10 @@ std::vector<std::shared_ptr<Value>> Neuron::parameters() {
 
 /**
  * @brief Layer class
+ * 
+ * The Layer class represents a layer in a neural network.
+ * It consists of multiple neurons and provides functionality for computing
+ * the output of the layer and accessing the layer's parameters.
 */
 Layer::Layer(int nin, int nout){
     total_params=(nin+1)*nout;
@@ -110,6 +122,10 @@ void Layer::show_parameters() {
 
 /**
  * @brief MLP class
+ * 
+ * The MLP class represents a Multi-Layer Perceptron neural network.
+ * It consists of multiple layers and provides functionality for
+ * computing the output of the network and accessing the network's parameters.
 */
 
 MLP::MLP(int nin, std::vector<int> nout) {
@@ -159,9 +175,3 @@ void MLP::show_parameters() {
         i=i+1;
     }
 }
-
-
-
-
-
-
