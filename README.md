@@ -19,7 +19,7 @@ It was made with the major intention for personal learning. So..
 ### Vision
 Given the recent breakthrough of C/C++ versions of neural nets, like gerganov's llama.cpp, it made a lot of sense to build some neural nets with C/C++, hence cpp-micrograd.
 
-Albeit a toy version, it gives a good understanding of how c++ would implement basic neural nets . IMO a very good start to understanding and using c/c++ neural nets, like ggml as no matter how complex the network, the basic autograd computation graph will always be the core.
+Albeit a toy version, it gives a good understanding of how c++ would implement basic neural nets . IMO a very good start to understanding and using c/c++ neural nets like ggml, because no matter how complex and versatile the network, the basic autograd computation graph will always be same and omnipresent.
 
 **The vision** is to make a C implementation too, and then go all the way to launching Cuda kernels, while making it as educational as possible. 
 
