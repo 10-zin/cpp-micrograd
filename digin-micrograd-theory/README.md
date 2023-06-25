@@ -40,7 +40,7 @@ n1, n2 are nodes that take in binary inputs, like (1, 0).
 Then, we combine input neurons with few more neurons, namely n3,4..n7.
 These neurons help in learning the relation between input and the expected output.
 Notice few neurons are created from a combination of 2 source neurons, like n3=n1+n2.
-These operations all the neural net to model complex data patterns. More complex the operations get, the more complex data patterns, a neural net can learn.
+These operations allow the neural net to model complex data patterns. More complex the operations get, the more complex data patterns, a neural net can learn.
 
 Important thing to note. The actual neural net consists of 7 neurons, from n1-n7.
 Now what are n8 and n9 then?
