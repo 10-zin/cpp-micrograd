@@ -95,7 +95,7 @@ Let's start from the final node, the loss node, $n_9$.
 3. Similarly, $$\text{gradient($n_7$)} = \frac{dn_9}{dn_9} \cdot \frac{dn_9}{dn_7} = 1$$
     * Substitute, $n_9 = n_7-n_8$
 4. Now lets go to $n_6$ $$\text{gradient($n_6$)} = \frac{dn_9}{dn_7} \cdot \frac{dn_7}{dn_6} = 1$$
-    * Substitute gradient of $n_7$ from 3. & $n_7$ = $n_5$+$n_6$
+    * Substitute gradient of $n_7$ from 3. & $n_7$ = $n_5+n_6$
     * => (1)*(1) = 1.
 5. Similarly, $$\text{gradient($n_5$)} = \frac{dn_9}{dn_7} \cdot \frac{dn_7}{dn_5} = 1$$
 6. Now let;'s go to $n_4$.
@@ -105,7 +105,7 @@ Let's start from the final node, the loss node, $n_9$.
     
 7. Similarly, for $n_3$:
     * $$\text{gradient($n_3$)} = \frac{dn_9}{dn_5} \cdot \frac{dn_5}{dn_3} = n_4$$
-8. **Observation**: for MUL op, b/w $n_a$*$n_b$, $$\text{gradient($n_a$) = $n_b$ }$$ $$\text{gradient($n_b$) = $n_a$}$$
+8. **Observation**: for MUL op, b/w $n_a \cdot n_b$, $$\text{gradient($n_a$) = $n_b$ }$$ $$\text{gradient($n_b$) = $n_a$}$$
 9. Now let's go till the beginning!
     * $$\text{gradient($n_2$)} = \frac{dn_9}{dn_3} \cdot \frac{dn_3}{dn_2} = n_4$$
     * $$\text{gradient($n_2$)} = n_4 \cdot \frac{dn_3}{dn_2} => n_4 \cdot \frac{d(n_1+n_2)}{dn_2} => n_4 \cdot (0+1)=>n_4$$
