@@ -63,22 +63,15 @@ Now, how do you go about computing this?
 Here comes the famous, chain rule!
 Let's focus on node $n_3$, then.
 
-$$
-\frac{dn_9}{dn_3} = \frac{dn_9}{dn_8}*\frac{dn_8}{dn_7}*\frac{dn_8}{dn_7}
-$$
-
 $$\frac{dn_9}{dn_3} = \frac{dn_9}{dn_8} \cdot \frac{dn_8}{dn_7} \cdot \frac{dn_7}{dn_6} \cdot \frac{dn_6}{dn_5} \cdot \frac{dn_5}{dn_4} \cdot \frac{dn_4}{dn_3}$$
-
-
-$$\frac{dn_9}{dn_3} = \frac{dn_9}{dn_8}*\frac{dn_8}{dn_7}*\frac{dn_7}{dn_6}*\frac{dn_6}{dn_5}*\frac{dn_5}{dn_4}*\frac{dn_4}{dn_3}$$
 
 So, basically to compute gradient for $n_3$, you must know the gradient of all descendants of that node. But notice, how we are always finally concerned with the final gradient for any node. That is we just want $\frac{dn_9}{dn_i}$. But in chain rule we have a lot of intermediate, or local gradients, of the form $\frac{dn_i+1}{dn_i}$ like $\frac{dn_8}{dn_7}$.
 Well, we can simplify the chain rule, to make it more intuitive and efficient for implementation.
 
 We know:
-$$\frac{dn_9}{dn_4} = \frac{dn_9}{dn_8}*\frac{dn_8}{dn_7}*\frac{dn_7}{dn_6}*\frac{dn_6}{dn_5}*\frac{dn_5}{dn_4}$$
+$$\frac{dn_9}{dn_4} = \frac{dn_9}{dn_8} \cdot \frac{dn_8}{dn_7} \cdot \frac{dn_7}{dn_6} \cdot \frac{dn_6}{dn_5} \cdot \frac{dn_5}{dn_4}$$
 and 
-$$\frac{dn_9}{dn_3} = \frac{dn_9}{dn_8}*\frac{dn_8}{dn_7}*\frac{dn_7}{dn_6}*\frac{dn_6}{dn_5}*\frac{dn_5}{dn_4}*\frac{dn_4}{dn_3}$$
+$$\frac{dn_9}{dn_3} = \frac{dn_9}{dn_8} \cdot \frac{dn_8}{dn_7} \cdot \frac{dn_7}{dn_6} \cdot \frac{dn_6}{dn_5} \cdot \frac{dn_5}{dn_4} \cdot \frac{dn_4}{dn_3}$$
 thus, by substitution:
 $$\frac{dn_9}{dn_3} = \frac{dn_9}{dn_4}*\frac{dn_4}{dn_3}$$
 Put simply
