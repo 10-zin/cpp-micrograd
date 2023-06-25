@@ -1,7 +1,8 @@
 This folder holds the detailed "theoretical" explanation of micrograd!
 For hands-on implementation dig into the other folders.
 
-First, a brief intuition, from a node to ChatGPT.
+## Intuition: from a node to ChatGPT !
+First, a brief intuition, from a node in a graph to ChatGPT.
 1. So, what's a neural network?
     * It's essentialy a graph of nodes. But what makes that graph a neural network is the property of each node to hold gradients.
 
@@ -15,6 +16,7 @@ First, a brief intuition, from a node to ChatGPT.
     * It's just a billion if not trillion node graph that learned to model the intricate behaviour of humans through their projected shadow on the internet.
     * Obviously there is more to how you actually build a ChatGPT like model. Something only few experts can build, but fundamentally it is a graph where the nodes represent the complex realtions that define the world.
 
+## Backpropogation
 Great! but what's backpropogation?
 
 Now, that's when we get into how gradients actually get calculated! Welcome to the most simple yet elegant math formulae that changed the world forever.
@@ -80,6 +82,7 @@ Intuitively:
 
 $$\text{$\frac{dn_9}{dn_i}$ (gradient of node )} = \text{$\frac{dn_9}{dn_{i+1}}$ (gradient of descendant)} * \text{$\frac{dn_{i+1}}{dn_i}$ (local gradient)} $$
 
+## Backpropogation by hand.
 Now, let's see how gradient would propogate.
 Let's start from the final node, the loss node, $n_9$.
 1. $$\text{gradient($n_9$)} = \frac{dn_9}{dn_9} = 1$$
@@ -108,4 +111,9 @@ Let's start from the final node, the loss node, $n_9$.
     * $$\text{gradient($n_2$)} = n_4 *\frac{dn_3}{dn_2} => n_4 *\frac{d(n_1+n_2)}{dn_2} => n_4*(0+1)=>n_4$$
 10. Similarly, $$\text{gradient($n_1$)} = \frac{dn_9}{dn_3}*\frac{dn_3}{dn_1} = n_4$$
 
-
+## Autograd: Crux for coding backpropogation.
+## TODO: 
+1. Connect the gradient propogation to the actual implementation in `engine.cpp`.
+2. map how you code gradient propogation, by implementing just the derviative for each operation like +,*,- etc..
+3. showcase derivative of few operations like +,-,* and how its implemented in `engine.cpp`.
+4. Demonstrate the essence of _backward lamdba function.
