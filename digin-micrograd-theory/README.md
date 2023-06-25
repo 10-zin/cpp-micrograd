@@ -86,30 +86,30 @@ $$\text{$\frac{dn_9}{dn_i}$ (gradient of node )} = \text{$\frac{dn_9}{dn_{i+1}}$
 Now, let's see how gradient would propogate.
 Let's start from the final node, the loss node, $n_9$.
 1. $$\text{gradient($n_9$)} = \frac{dn_9}{dn_9} = 1$$
-2. $$\text{gradient($n_8$)} = \frac{dn_9}{dn_9}*\frac{dn_9}{dn_8} = -1$$
+2. $$\text{gradient($n_8$)} = \frac{dn_9}{dn_9} \cdot \frac{dn_9}{dn_8} = -1$$
     * How?, Substitute $n_9$
         * $$n_9 = n_7-n_8$$
     * $$\text{Thus, } \frac{dn_9}{dn_8} = \frac{dn_7-dn_8}{dn_8} => \frac{dn_7}{dn_8}-\frac{dn_8}{dn_8}=> 0-1 => -1$$
     * $$=>\frac{dn_9}{dn_8}=-1$$
-    * $$\text{gradient($n_8$)} = \frac{dn_9}{dn_9}*(-1) => 1*(-1) => -1$$
-3. Similarly, $$\text{gradient($n_7$)} = \frac{dn_9}{dn_9}*\frac{dn_9}{dn_7} = 1$$
+    * $$\text{gradient($n_8$)} = \frac{dn_9}{dn_9} \cdot (-1) => 1 \cdot (-1) => -1$$
+3. Similarly, $$\text{gradient($n_7$)} = \frac{dn_9}{dn_9} \cdot \frac{dn_9}{dn_7} = 1$$
     * Substitute, $n_9 = n_7-n_8$
-4. Now lets go to $n_6$ $$\text{gradient($n_6$)} = \frac{dn_9}{dn_7}*\frac{dn_7}{dn_6} = 1$$
+4. Now lets go to $n_6$ $$\text{gradient($n_6$)} = \frac{dn_9}{dn_7} \cdot \frac{dn_7}{dn_6} = 1$$
     * Substitute gradient of $n_7$ from 3. & $n_7$ = $n_5$+$n_6$
     * => (1)*(1) = 1.
-5. Similarly, $$\text{gradient($n_5$)} = \frac{dn_9}{dn_7}*\frac{dn_7}{dn_5} = 1$$
+5. Similarly, $$\text{gradient($n_5$)} = \frac{dn_9}{dn_7} \cdot \frac{dn_7}{dn_5} = 1$$
 6. Now let;'s go to $n_4$.
-    *  $$\text{gradient($n_4$)} = \frac{dn_9}{dn_5}*\frac{dn_5}{dn_4} = n_3$$
+    *  $$\text{gradient($n_4$)} = \frac{dn_9}{dn_5} \cdot \frac{dn_5}{dn_4} = n_3$$
     * From 5. => $\frac{dn_9}{dn_5} = 1$ and $n_5 = n_3*n_4$,
-    * thus, $$\text{gradient($n_4$)} = \frac{dn_9}{dn_5}*\frac{dn_5}{dn_4} => (1)*( \frac{d (n_3*n_4)}{dn_4}) =>(1)*(n_3*\frac{dn_4}{dn_4}) => n_3$$
+    * thus, $$\text{gradient($n_4$)} = \frac{dn_9}{dn_5} \cdot \frac{dn_5}{dn_4} => (1) \cdot ( \frac{d (n_3*n_4)}{dn_4}) =>(1) \cdot (n_3 \cdot \frac{dn_4}{dn_4}) => n_3$$
     
 7. Similarly, for $n_3$:
-    * $$\text{gradient($n_3$)} = \frac{dn_9}{dn_5}*\frac{dn_5}{dn_3} = n_4$$
+    * $$\text{gradient($n_3$)} = \frac{dn_9}{dn_5} \cdot \frac{dn_5}{dn_3} = n_4$$
 8. **Observation**: for MUL op, b/w $n_a$*$n_b$, $$\text{gradient($n_a$) = $n_b$ }$$ $$\text{gradient($n_b$) = $n_a$}$$
 9. Now let's go till the beginning!
-    * $$\text{gradient($n_2$)} = \frac{dn_9}{dn_3}*\frac{dn_3}{dn_2} = n_4$$
-    * $$\text{gradient($n_2$)} = n_4 *\frac{dn_3}{dn_2} => n_4 *\frac{d(n_1+n_2)}{dn_2} => n_4*(0+1)=>n_4$$
-10. Similarly, $$\text{gradient($n_1$)} = \frac{dn_9}{dn_3}*\frac{dn_3}{dn_1} = n_4$$
+    * $$\text{gradient($n_2$)} = \frac{dn_9}{dn_3} \cdot \frac{dn_3}{dn_2} = n_4$$
+    * $$\text{gradient($n_2$)} = n_4 \cdot \frac{dn_3}{dn_2} => n_4 \cdot \frac{d(n_1+n_2)}{dn_2} => n_4 \cdot (0+1)=>n_4$$
+10. Similarly, $$\text{gradient($n_1$)} = \frac{dn_9}{dn_3} \cdot \frac{dn_3}{dn_1} = n_4$$
 
 ## Autograd: Crux for coding backpropogation.
 ## TODO: 
