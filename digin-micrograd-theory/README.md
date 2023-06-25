@@ -64,7 +64,7 @@ Here comes the famous, chain rule!
 Let's focus on node $n_3$, then.
 
 $$
-\frac{dn_9}{dn_3} = \frac{dn_9}{dn_8}*\frac{dn_8}{dn_7}*\frac{dn_7}{dn_6}*\frac{dn_6}{dn_5}*\frac{dn_5}{dn_4}*\frac{dn_4}{dn_3}
+\frac{dn_9}{dn_3} = \frac{dn_9}{dn_8}*\frac{dn_8}{dn_7}
 $$
 
 
