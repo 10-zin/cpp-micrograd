@@ -73,9 +73,9 @@ $$\frac{dn_9}{dn_4} = \frac{dn_9}{dn_8} \cdot \frac{dn_8}{dn_7} \cdot \frac{dn_7
 and 
 $$\frac{dn_9}{dn_3} = \frac{dn_9}{dn_8} \cdot \frac{dn_8}{dn_7} \cdot \frac{dn_7}{dn_6} \cdot \frac{dn_6}{dn_5} \cdot \frac{dn_5}{dn_4} \cdot \frac{dn_4}{dn_3}$$
 thus, by substitution:
-$$\frac{dn_9}{dn_3} = \frac{dn_9}{dn_4}*\frac{dn_4}{dn_3}$$
+$$\frac{dn_9}{dn_3} = \frac{dn_9}{dn_4} \cdot \frac{dn_4}{dn_3}$$
 Put simply
-$$\frac{dn_9}{dn_i} = \frac{dn_9}{dn_{i+1}}*\frac{dn_{i+1}}{dn_i}$$
+$$\frac{dn_9}{dn_i} = \frac{dn_9}{dn_{i+1}} \cdot \frac{dn_{i+1}}{dn_i}$$
 Intuitively:
 
 $$\text{$\frac{dn_9}{dn_i}$ (gradient of node )} = \text{$\frac{dn_9}{dn_{i+1}}$ (gradient of descendant)} * \text{$\frac{dn_{i+1}}{dn_i}$ (local gradient)} $$
