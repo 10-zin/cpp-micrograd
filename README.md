@@ -7,6 +7,10 @@ And micrograd is the simplest implementation of the autograd engine, but.. its o
 This is a simple re-implementation of micrograd using cpp.
 It was made with the major intention for personal learning. So..
 
+### Getting started.
+Dive into `cpp-micrograd` to get started.
+There's a simple getting started code, to create a basic neural net that models the AND logic gate.
+
 ### Who will find this repo useful?
 1. If you love micrograd, but would wanna also have a cpp version for it.
 2. If you want a crisp backprop theory and annotated code of the autograd engine. 
