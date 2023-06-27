@@ -1,3 +1,10 @@
+/**
+ * In progress.
+ * Doesn't work yet, can just do addition without even proper backprop.
+ * Feel free to contribute, if you get the kick.
+ * We need to ace the backprop for ADD op first, as writing other ops is straight-forward.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 
