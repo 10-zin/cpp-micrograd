@@ -20,7 +20,6 @@ Value* create_value(float data);
 
 Value* add(Value* self, Value* other);
 
-
 Value* create_value(float data) {
     Value* value = (Value*)malloc(sizeof(Value));
     value->data = data;
