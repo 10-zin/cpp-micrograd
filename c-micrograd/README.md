@@ -1,7 +1,7 @@
 # C-micrograd
 
 In the works..
-Works for small neural nets, and lesser data.
+Works for small neural nets, and v.small data.
 
 ToDo Improvements :
 1. Suffers exploding gradients, as data is increased (needs relu, DIV, SUB operators to handle that).
