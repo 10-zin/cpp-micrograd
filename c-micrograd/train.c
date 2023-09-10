@@ -5,7 +5,7 @@ int main() {
     srand(43);  // seed the random number generator
 
     // Create a custom MLP with sizes [2,10,5,2]
-    int sizes[] = {1, 5, 10 5, 2};
+    int sizes[] = {1, 5, 10, 5, 2};
     int nlayers = sizeof(sizes) / sizeof(int);
     printf("nlayers:%i\n", nlayers);
     MLP* mlp = init_mlp(sizes, nlayers);
@@ -23,7 +23,7 @@ int main() {
     int epochs = 2;
     float lr = 0.001;
     for (int i = 0; i < epochs; i++) {
-        for (int i =0; i < MAX_ENTRIES; i++) {
+        for (int i =0; i < 2; i++) {
             float arr_x[] = {entries[i].number};
             float arr_y[] = {entries[i].label};
             Value** x = make_values(arr_x);
