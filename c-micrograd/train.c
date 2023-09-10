@@ -1,10 +1,11 @@
 #include "mlp.h"
+#include "load.h"
 
 int main() {
-    srand(time(NULL));  // seed the random number generator
+    srand(43);  // seed the random number generator
 
     // Create a custom MLP with sizes [2,10,5,2]
-    int sizes[] = {2, 10, 5, 2};
+    int sizes[] = {1, 5, 10 5, 2};
     int nlayers = sizeof(sizes) / sizeof(int);
     printf("nlayers:%i\n", nlayers);
     MLP* mlp = init_mlp(sizes, nlayers);
@@ -16,12 +17,20 @@ int main() {
     Value* y_true[2];
     y_true[0] = make_value(1);
     y_true[1] = make_value(0);
+    Entry* entries = load_data();
 
     // Train for a few iterations
     int epochs = 2;
-    float lr = 0.01;
+    float lr = 0.001;
     for (int i = 0; i < epochs; i++) {
-        train(mlp, x, y_true, lr);
+        for (int i =0; i < MAX_ENTRIES; i++) {
+            float arr_x[] = {entries[i].number};
+            float arr_y[] = {entries[i].label};
+            Value** x = make_values(arr_x);
+            Value** y_true = make_values(arr_y);
+            train(mlp, x, y_true, lr);
+        }
+        
     }
 
     for (int i = 0; i < mlp->nlayers; i++) {

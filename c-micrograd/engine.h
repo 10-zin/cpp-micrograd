@@ -21,6 +21,24 @@ Value* make_value(float x) {
     return v;
 }
 
+Value** make_values(float* arr) {
+    size_t len = sizeof(arr) / sizeof(arr[0]);
+    // Allocate memory for an array of pointers to Value structures
+    Value** values = (Value**)malloc(len * sizeof(Value*));
+    if (values == NULL) {
+        perror("Memory allocation failed");
+        exit(1);
+    }
+
+    // Initialize each element of the array using the make_value function
+    for (size_t i = 0; i < len; i++) {
+        values[i] = make_value(arr[i]);
+    }
+
+    return values;
+}
+
+
 // A simple function to print a Value object
 void print_value(Value* v) {
     printf("Value(val=%.2f, grad=%.2f)\\n", v->val, v->grad);
