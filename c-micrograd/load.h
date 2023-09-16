@@ -4,8 +4,8 @@
 #define MAX_ENTRIES 30
 
 typedef struct {
-    int number;
-    int label;  // 0 for even, 1 for odd
+    float number;
+    float label;  // 0 for even, 1 for odd
 } Entry;
 
 Entry* load_data() {
@@ -24,7 +24,7 @@ Entry* load_data() {
         exit(1);
     }
 
-    while (fscanf(fp, "%d %d", &entries[count].number, &entries[count].label) != EOF && count < MAX_ENTRIES) {
+    while (fscanf(fp, "%f %f", &entries[count].number, &entries[count].label) != EOF && count < MAX_ENTRIES) {
         count++;
     }
     fclose(fp);
