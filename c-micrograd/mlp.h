@@ -24,17 +24,21 @@ Value* neuron_forward(Neuron* neuron, Value** x) {
     Value* sum = make_value(0);
     for (int i = 0; i < neuron->nin; i++) {
         Value* prod = mul(neuron->w[i], x[i]);
+        // printf("\nw%f*x%f, %f", neuron->w[i]->val, x[i]->val, prod->val);
         sum = add(sum, prod);
         // free_value(prod);
     }
     sum = add(sum, neuron->b);
-
     if (neuron->nonlin) {
-        // Apply ReLU activation
-        if (sum->val < 0) {
-            sum->val = 0;
-        }
+        Value* sum = leaky_relu(sum);
     }
+
+    // if (neuron->nonlin) {
+    //     // Apply ReLU activation
+    //     if (sum->val < 0) {
+    //         sum->val = 0;
+    //     }
+    // }
 
     return sum;
 }
@@ -83,6 +87,7 @@ Value** mlp_forward(MLP* mlp, Value** x) {
     for (int i = 0; i < mlp->nlayers; i++) {
         x = layer_forward(mlp->layers[i], x);
     }
+    // x = softmax(x, 2);
     return x;
 }
 
@@ -90,17 +95,17 @@ Value** mlp_forward(MLP* mlp, Value** x) {
 Value* mse_loss(Value** y_pred, Value** y_true, int size) {
     Value* loss = make_value(0);
     for (int i = 0; i < size; i++) {
-        // print_value(y_pred[i]);
-        // print_value(y_true[i]);
-        Value* neg_y_true = mul(make_value(-1.0), y_true[i]);
-        Value* diff = add(y_pred[i], neg_y_true);
-        Value* sq = mul(diff, diff);
+        Value* diff = sub(y_pred[i], y_true[i]);
+        Value* sq = power(diff, make_value(2));
         loss = add(loss, sq);
+        // printf("y_pred: %f y_true: %f\n", y_pred[i]->val, y_true[i]->val);
+        // printf("diff: %f, square %f", diff->val, sq->val);
+        // printf("loss: %f\n", loss->val);
         // free_value(diff);
         // free_value(sq);
     }
-    // Value* avg_loss = make_value(loss->val / size);
-    // free_value(loss);
+    loss = divide(loss, make_value(size));
+
     return loss;
 }
 
@@ -108,17 +113,31 @@ void update_weights(Value* v, float lr) {
     v->val -= lr * v->grad;
 }
 
-void train(MLP* mlp, Value** x, Value** y_true, float lr) {
+void show_params(MLP* mlp){
+    printf("\nMLP\n");
+    for (int i = 0; i < mlp->nlayers; i++) {
+        Layer* layer = mlp->layers[i];
+        printf("\nLayer%i:\n", i);
+        for (int j = 0; j < layer->nout; j++) {
+            Neuron* neuron = layer->neurons[j];
+            for (int k = 0; k < neuron->nin; k++) {
+                print_value(neuron->w[k]);
+            }
+        }
+    }
+        printf("\n\n");
+}
+
+
+
+Value* train(MLP* mlp, Value** x, Value** y_true, float lr) {
+
     // Forward pass
     Value** y_pred = mlp_forward(mlp, x);
 
     // Compute loss
     Value* loss = mse_loss(y_pred, y_true, 2);
-    printf("Loss: %.2f\n", loss->val);
-
-    // Backward pass
-    loss->grad=1.0;
-    backward(loss);
+    // printf("Loss: %.2f\n", loss->val);
 
     // Update weights and biases using gradient descent
     for (int i = 0; i < mlp->nlayers; i++) {
@@ -131,6 +150,8 @@ void train(MLP* mlp, Value** x, Value** y_true, float lr) {
             }
         }
     }
+
+    return loss;
 
     // free_value(loss);
 }
