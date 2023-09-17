@@ -15,7 +15,7 @@ Features
 ## Getting started
 
 `engine.h`
-This header file serves as the backbone of the C-micrograd library. It encapsulates a suite of primary operations, each equipped with both forward and backward implementations. Central to this module are the topo_sort and backward functions, which together constitute the crux of the backpropagation mechanism, empowering the library's automatic differentiation capabilities.
+This header file serves as the backbone of the C-micrograd library. It encapsulates a suite of primary operations like add, sub, div, mul, each equipped with both forward and backward implementations. Central to this module are the topo_sort and backward functions, which together constitute the crux of the backpropagation mechanism, empowering the library's automatic differentiation capabilities.
 
 `mlp.h`
 The mlp.h header is where the fundamental elements of a multilayer perceptron (MLP) reside. It provides a hierarchical structure, starting from individual neurons, building up to neural layers, and culminating in the full-fledged MLP. Each level in this hierarchy offers a deeper abstraction, allowing for the seamless assembly of complex neural architectures.
