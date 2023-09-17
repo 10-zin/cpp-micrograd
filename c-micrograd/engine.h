@@ -246,50 +246,6 @@ Value* leaky_relu(Value* a) {
     return out;
 }
 
-// TODO SOFTMAX
-// Backward function for Softmax
-// void softmax_backward(Value* v) {
-//     for (int i = 0; i < v->n_children; i++) {
-//         Value* child = v->children[i];
-//         for (int j = 0; j < v->n_children; j++) {
-//             if (i == j) {
-//                 child->grad += v->grad * v->val * (1 - v->val);  // When i == j
-//             } else {
-//                 child->grad -= v->grad * v->val * v->children[j]->val;  // When i != j
-//             }
-//             grad_clip(child, -10.0, 10.0);
-//         }
-//     }
-// }
-
-// // Forward function for Softmax
-// Value** softmax(Value** x, int size) {
-//     Value** out = (Value**)malloc(size * sizeof(Value*));
-//     double sum_exp = 0.0;
-
-//     // Calculate the sum of exponentials
-//     for (int i = 0; i < size; i++) {
-//         sum_exp += exp(x[i]->val);
-//     }
-
-//     // Compute the softmax values
-//     for (int i = 0; i < size; i++) {
-//         out[i] = (Value*)malloc(sizeof(Value));
-//         out[i]->val = exp(x[i]->val) / sum_exp;
-//         out[i]->grad = 0;
-//         out[i]->children = (Value**)malloc(size * sizeof(Value*));
-//         for (int j = 0; j < size; j++) {
-//             out[i]->children[j] = x[j];
-//         }
-//         out[i]->n_children = size;
-//         out[i]->backward = softmax_backward;
-//     }
-//     return out;
-// }
-
-
-
-
 // Function to free a Value object
 void free_value(Value* v) {
     if (v->children) {
