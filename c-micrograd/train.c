@@ -59,10 +59,10 @@ int main() {
 
             // Backward pass
             if (i%backward_freq==0){
-                // make loss.grad=0 (last node in mlp topo graph).
+                // make loss.grad=1.0 (last node in mlp topo graph).
                 // grad is basically dy/da or dy/db where y = a op b; op can by anything add, sub, div ..
                 // in case of last node (which is the loss) -> a or b is itself y. since its the last node, and does have any op on it.
-                // so basically dy/dy = 1. 
+                // so basically dy/dy = 1.0 
                 // This kicks off the gradient propogation backwards.
                 total_loss->grad=1.0;
                 backward(total_loss);
