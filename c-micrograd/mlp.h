@@ -33,13 +33,6 @@ Value* neuron_forward(Neuron* neuron, Value** x) {
         Value* sum = leaky_relu(sum);
     }
 
-    // if (neuron->nonlin) {
-    //     // Apply ReLU activation
-    //     if (sum->val < 0) {
-    //         sum->val = 0;
-    //     }
-    // }
-
     return sum;
 }
 
@@ -52,6 +45,7 @@ Layer* init_layer(int nin, int nout, int nonlin) {
     Layer* layer = (Layer*)malloc(sizeof(Layer));
     layer->neurons = (Neuron**)malloc(nout * sizeof(Neuron*));
     for (int i = 0; i < nout; i++) {
+        
         layer->neurons[i] = init_neuron(nin, nonlin);
     }
     layer->nout = nout;
@@ -76,7 +70,6 @@ MLP* init_mlp(int* sizes, int nlayers) {
     mlp->layers = (Layer**)malloc((nlayers - 1) * sizeof(Layer*));
     for (int i = 0; i < nlayers - 1; i++) {
         int nonlin = (i != nlayers - 2);  // nonlinearity for all layers except the last one
-        // int nonlin = 0;
         mlp->layers[i] = init_layer(sizes[i], sizes[i+1], nonlin);
     }
     mlp->nlayers = nlayers - 1;
@@ -87,22 +80,17 @@ Value** mlp_forward(MLP* mlp, Value** x) {
     for (int i = 0; i < mlp->nlayers; i++) {
         x = layer_forward(mlp->layers[i], x);
     }
-    // x = softmax(x, 2);
     return x;
 }
 
 // Mean Squared Error loss
 Value* mse_loss(Value** y_pred, Value** y_true, int size) {
-    Value* loss = make_value(0);
+    
+    Value* loss = make_value(0.0);
     for (int i = 0; i < size; i++) {
         Value* diff = sub(y_pred[i], y_true[i]);
-        Value* sq = power(diff, make_value(2));
+        Value* sq = power(diff, make_value(2.0));
         loss = add(loss, sq);
-        // printf("y_pred: %f y_true: %f\n", y_pred[i]->val, y_true[i]->val);
-        // printf("diff: %f, square %f", diff->val, sq->val);
-        // printf("loss: %f\n", loss->val);
-        // free_value(diff);
-        // free_value(sq);
     }
     loss = divide(loss, make_value(size));
 
