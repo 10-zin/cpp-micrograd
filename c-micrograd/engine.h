@@ -43,7 +43,7 @@ Value** make_values(float* arr) {
 
 // A simple function to print a Value object
 void print_value(Value* v) {
-    printf("Value(val=%.2f, grad=%.2f)\\n", v->val, v->grad);
+    printf("Value(val=%.2f, grad=%.2f)\n", v->val, v->grad);
 }
 
 // Helper function for backward to perform topological sort
