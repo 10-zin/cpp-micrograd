@@ -73,7 +73,7 @@ int main() {
             
             // show_params(mlp);
         }
-        printf("\n\nEPOCH LOSSS!!::%f: \n\n", epoch_loss/25);
+        printf("\n\nEPOCH %i LOSSS: %f", ep, epoch_loss/25);
         epoch_loss=0.0;
         
     }
