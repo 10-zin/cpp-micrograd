@@ -4,7 +4,29 @@
 
 float relu_alpha = 0.01;
 
-// Define a struct for Value, the fundamental building block of the autograd engine
+/**
+ * @struct Value
+ * @brief Represents a node in the computation graph, encapsulating a scalar value and its gradient.
+ *
+ * The `Value` struct is fundamental to the operation of automatic differentiation in the neural network.
+ * Each Value instance can be thought of as a node in the computation graph, keeping track of its actual value,
+ * gradient, and connections to other nodes (children) it depends on.
+ *
+ * @param val Actual scalar value represented by this node.
+ * @param grad Gradient of the value, computed during the backward pass.
+ * @param children Array of pointers to child nodes that this value directly depends on in the computation graph.
+ * @param n_children Number of child nodes in the `children` array.
+ * @param backward Function pointer to the backward function responsible for computing the gradient for this node.
+ *
+ * @example
+ * // Creation of a Value node with a scalar value of 3.5
+ * Value* my_value = (Value*)malloc(sizeof(Value));
+ * my_value->val = 3.5;
+ * my_value->grad = 0;  // Gradient is initialized to 0
+ * my_value->children = NULL;  // No children initially
+ * my_value->n_children = 0;  // No children count
+ * my_value->backward = NULL;  // No backward function initially
+ */
 typedef struct Value {
     float val;  // actual value
     float grad;  // gradient
