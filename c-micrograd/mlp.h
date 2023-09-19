@@ -61,7 +61,7 @@ Value* neuron_forward(Neuron* neuron, Value** x) {
     }
     sum = add(sum, neuron->b);
     if (neuron->nonlin) {
-        Value* sum = leaky_relu(sum);
+        sum = leaky_relu(sum);
     }
 
     return sum;

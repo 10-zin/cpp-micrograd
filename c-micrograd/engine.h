@@ -72,8 +72,7 @@ Value* make_value(float x) {
  *     print_value(values[i]);  // Outputs: Value(val=1.00, grad=0.00), Value(val=2.00, grad=0.00), etc.
  * }
  */
-Value** make_values(float* arr) {
-    size_t len = sizeof(arr) / sizeof(arr[0]);
+Value** make_values(float* arr, size_t len) {
     // Allocate memory for an array of pointers to Value structures
     Value** values = (Value**)malloc(len * sizeof(Value*));
     if (values == NULL) {

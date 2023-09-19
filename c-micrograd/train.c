@@ -20,7 +20,9 @@ float* one_hot_encode(float y_true) {
 
 int main() {
     srand(43);  // seed the random number generator
-
+    
+    // inputs, in this case 1, an integer
+    int inputs=1;
     // labels, in this case 2, (odd (0) or even (1))
     int labels=2;
     // custom MLP with sizes [1, 5, 10, 5, 2]
@@ -48,10 +50,10 @@ int main() {
         for (int i=0; i < 25; i++) {
             
             float arr_x[] = {entries[i].number};
-            Value** x = make_values(arr_x);
+            Value** x = make_values(arr_x, inputs);
 
             float* arr_y = one_hot_encode(entries[i].label);
-            Value** y_true = make_values(arr_y);
+            Value** y_true = make_values(arr_y, labels);
 
             Value* loss = train(mlp, x, y_true, lr);
             total_loss = add(total_loss, loss);
